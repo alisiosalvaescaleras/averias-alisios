@@ -3,6 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  const KEY='alisios_auth';
+  const PASS='2065117408';
+  if(sessionStorage.getItem(KEY)===PASS)return;
+  document.addEventListener('DOMContentLoaded',function(){
+    const d=document.createElement('div');
+    d.id='login-screen';
+    d.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0F2238,#1A3A5C);display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif';
+    d.innerHTML=`<div style="background:#fff;border-radius:20px;padding:36px 32px;width:min(360px,90vw);text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.4)">
+      <img src="icons/logo.png" style="width:90px;margin-bottom:16px;border-radius:12px">
+      <h2 style="margin:0 0 4px;font-size:22px;color:#1A3A5C;font-weight:900">Averías Alisios</h2>
+      <p style="margin:0 0 24px;color:#5A6A7A;font-size:13.5px">Acceso restringido al equipo técnico</p>
+      <input id="pin" type="password" inputmode="numeric" placeholder="Clave de acceso" style="width:100%;padding:12px 14px;border:2px solid #DDD5C5;border-radius:10px;font-size:17px;text-align:center;letter-spacing:4px;box-sizing:border-box;margin-bottom:12px">
+      <button onclick="checkPin()" style="width:100%;background:linear-gradient(135deg,#F5A800,#D4900A);color:#1b1300;border:0;border-radius:10px;padding:12px;font-size:16px;font-weight:800;cursor:pointer">Entrar</button>
+      <p id="pin-err" style="color:#A02020;font-size:13px;margin:10px 0 0;min-height:18px"></p>
+    </div>`;
+    document.body.prepend(d);
+    document.getElementById('pin').addEventListener('keydown',function(e){if(e.key==='Enter')checkPin();});
+    setTimeout(function(){document.getElementById('pin').focus();},100);
+  });
+  window.checkPin=function(){
+    const v=document.getElementById('pin').value;
+    if(v===PASS){sessionStorage.setItem(KEY,PASS);document.getElementById('login-screen').remove();}
+    else{document.getElementById('pin-err').textContent='Clave incorrecta';document.getElementById('pin').value='';document.getElementById('pin').focus();}
+  };
+})();
+</script>
 <title>Averías Alisios</title>
 <meta name="description" content="Biblioteca técnica y diagnóstico de averías — Alisios Salvaescaleras">
 <meta name="theme-color" content="#1A3A5C">
