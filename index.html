@@ -875,7 +875,7 @@ function histNode(e,compact){
     const del=h('button',{class:'btn ghost sm',onclick:()=>{
       row.replaceChildren(
         h('span',{class:'mut'},'¿Borrar esta avería para todos?'),
-        h('button',{class:'btn sm',onclick:async()=>{try{await db.doc('averias/'+e.id).delete();}catch(x){msg.textContent='No se pudo borrar.';row.replaceChildren(msg);}}}},'Sí, borrar'),
+        h('button',{class:'btn sm',onclick:async()=>{try{await db.doc('averias/'+e.id).delete();}catch(x){msg.textContent='No se pudo borrar.';row.replaceChildren(msg);}}},'Sí, borrar'),
         h('button',{class:'btn ghost sm',onclick:()=>row.replaceChildren(del)},'No')
       );
     }},'Borrar');
