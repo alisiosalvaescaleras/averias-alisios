@@ -1,41 +1,40 @@
 /* Service Worker — Averías Alisios */
-const CACHE = 'alisios-v3';
+const CACHE = 'alisios-v4';
 const ASSETS = [
   './',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
-  './data/catalogo.json',
-  './data/meta.json',
-  './data/t0.json',
-  './data/t1.json',
-  './data/t2.json',
-  './data/t3.json',
-  './data/t4.json',
-  './data/t5.json',
-  './data/t6.json',
-  './data/t7.json',
-  './data/t8.json',
-  './data/t9.json',
-  './data/t10.json',
-  './data/t11.json',
-  './data/t12.json',
-  './data/t13.json',
-  './data/t14.json',
-  './data/t15.json',
-  './data/t16.json',
-  './data/t17.json',
-  './data/t18.json',
-  './data/t19.json',
-  './data/t20.json',
-  './data/t21.json'
+  './catalogo.json',
+  './meta.json',
+  './t0.json',
+  './t1.json',
+  './t2.json',
+  './t3.json',
+  './t4.json',
+  './t5.json',
+  './t6.json',
+  './t7.json',
+  './t8.json',
+  './t9.json',
+  './t10.json',
+  './t11.json',
+  './t12.json',
+  './t13.json',
+  './t14.json',
+  './t15.json',
+  './t16.json',
+  './t17.json',
+  './t18.json',
+  './t19.json',
+  './t20.json',
+  './t21.json'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE).then(c => {
-      // Cachear en lotes para no saturar
       const chunks = [];
       for (let i = 0; i < ASSETS.length; i += 5) chunks.push(ASSETS.slice(i, i + 5));
       return chunks.reduce((p, chunk) =>
@@ -53,7 +52,6 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Solo cachear peticiones GET al mismo origen
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if (url.origin !== location.origin) return;
@@ -67,7 +65,6 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
       }).catch(() => {
-        // Si es la raíz y no hay red, devolver el index cacheado
         if (e.request.mode === 'navigate') return caches.match('./');
         return new Response('', { status: 503 });
       });
@@ -75,7 +72,6 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Mensaje para forzar actualización desde la app
 self.addEventListener('message', e => {
   if (e.data === 'skipWaiting') self.skipWaiting();
 });
